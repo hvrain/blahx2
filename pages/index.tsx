@@ -1,5 +1,5 @@
 import { NextPage } from 'next';
 
-const IndexPage: NextPage = () => <>Hello world</>;
+const IndexPage: NextPage = () => <ServiceLayout title="test" />;
 
 export default IndexPage;
