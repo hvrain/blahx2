@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import serviceLayout from '../firebase-admin.json';
+// import serviceLayout from '../firebase-admin.json';
 
 interface Config {
   credential: {
@@ -14,7 +14,7 @@ interface Config {
 }
 
 export default class FirebaseAdmin {
-  public static instance: FirebaseAdmin;
+  private static instance: FirebaseAdmin;
 
   private init = false;
 
@@ -46,7 +46,7 @@ export default class FirebaseAdmin {
     };
     /**  배포 시 환경변수를 사용해야 한다.*/
     admin.initializeApp({
-      credential: admin.credential.cert(serviceLayout),
+      credential: admin.credential.cert(config.credential),
     });
   }
 
