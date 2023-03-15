@@ -1,8 +1,13 @@
 import { Box, Button } from '@chakra-ui/react';
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { useAuth } from '@/contexts/auth_user.context';
+import FirebaseClient from '../models/firebase_client';
 
-// type Props = {};
+const provider = new GoogleAuthProvider();
 
 const GoogleLoginButton: React.FC = function () {
+  const { authUser, isLoading, signInWithGoogle } = useAuth();
+
   return (
     <Box>
       <Button
@@ -24,6 +29,7 @@ const GoogleLoginButton: React.FC = function () {
             alt="구글 로고"
           />
         }
+        onClick={signInWithGoogle}
       >
         구글 로그인
       </Button>

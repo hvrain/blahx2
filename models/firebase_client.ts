@@ -1,16 +1,14 @@
-import { initializeApp } from 'firebase-admin';
-import { Auth, getAuth } from 'firebase-admin/auth';
-import * as client from 'firebase/app';
-import { getApps } from 'firebase/app';
+import { Auth, getAuth } from 'firebase/auth';
+import { getApps, initializeApp } from 'firebase/app';
 import getConfig from 'next/config';
 
 interface Config {
   apiKey: string;
   authDomain: string;
   projectId: string;
-  storageBucket: string;
-  messagingSenderId: string;
-  appId: string;
+  // storageBucket: string;
+  // messagingSenderId: string;
+  // appId: string;
 }
 
 /**
@@ -24,9 +22,9 @@ const config: Config = {
   apiKey: publicRuntimeConfig.apiKey,
   authDomain: publicRuntimeConfig.authDomain,
   projectId: publicRuntimeConfig.projectId,
-  storageBucket: publicRuntimeConfig.storageBucket,
-  messagingSenderId: publicRuntimeConfig.messagingSenderId,
-  appId: publicRuntimeConfig.appId,
+  // storageBucket: publicRuntimeConfig.storageBucket,
+  // messagingSenderId: publicRuntimeConfig.messagingSenderId,
+  // appId: publicRuntimeConfig.appId,
 };
 
 export default class FirebaseClient {
@@ -37,11 +35,9 @@ export default class FirebaseClient {
   public constructor() {
     const apps = getApps();
     if (apps.length === 0) {
-      console.info('firebase client init');
       initializeApp(config);
     }
     this.auth = getAuth();
-    console.info('firebase auth');
   }
 
   public static getInstance(): FirebaseClient {
@@ -51,7 +47,7 @@ export default class FirebaseClient {
     return FirebaseClient.instance;
   }
 
-  public get getAuth(): Auth {
+  public get Auth(): Auth {
     return this.auth;
   }
 }
