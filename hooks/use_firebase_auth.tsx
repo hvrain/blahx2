@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup } from 'firebase/auth';
 import { InAuthUser } from '../models/in_auth_user';
 import FirebaseClient from '../models/firebase_client';
@@ -26,21 +26,24 @@ export default function useFirebaseAuth() {
     setIsLoading(false);
   }
 
-  onAuthStateChanged(FirebaseClient.getInstance().Auth, (user) => {
-    if (user === null) {
-      setAuthUser(null);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(FirebaseClient.getInstance().Auth, (user) => {
+      if (user === null) {
+        setAuthUser(null);
+        setIsLoading(false);
+        return;
+      }
+      setIsLoading(true);
+      setAuthUser({
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+      });
       setIsLoading(false);
-      return;
-    }
-    setIsLoading(true);
-    setAuthUser({
-      uid: user.uid,
-      displayName: user.displayName,
-      email: user.email,
-      photoURL: user.photoURL,
     });
-    setIsLoading(false);
-  });
+    return () => unsubscribe();
+  }, []);
 
   return {
     authUser,
