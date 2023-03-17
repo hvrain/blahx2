@@ -12,7 +12,19 @@ export default function useFirebaseAuth() {
     try {
       const signInResult = await signInWithPopup(FirebaseClient.getInstance().Auth, provider);
       if (signInResult.user) {
-        console.info(signInResult.user);
+        const resp = await fetch('/api/member.add', {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            uid: signInResult.user.uid,
+            displayName: signInResult.user.displayName,
+            email: signInResult.user.email,
+            photoURL: signInResult.user.photoURL,
+          }),
+        });
+        console.log(resp);
       }
     } catch (err) {
       console.error(err);
