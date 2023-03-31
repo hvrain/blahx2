@@ -2,12 +2,17 @@
 
 import { NextApiRequest, NextApiResponse } from 'next';
 import MemeberModel from '@/models/member.model';
-import checkMissingParams from './error/check_params_empty';
+import BadReqErr from '@/controllers/error/bad_request';
 
 async function add(req: NextApiRequest, res: NextApiResponse) {
   const { uid, displayName, email, photoURL } = req.body;
+  if (uid === null || uid === undefined) {
+    throw new BadReqErr('uid가 누락되었습니다.');
+  }
+  if (email === null || email === undefined) {
+    throw new BadReqErr('email이 누락되었습니다.');
+  }
 
-  checkMissingParams({ uid, email });
   const addResult = await MemeberModel.add({ uid, email, displayName: displayName ?? '', photoURL: photoURL ?? '' });
 
   return res.status(200).send(addResult);
@@ -15,9 +20,11 @@ async function add(req: NextApiRequest, res: NextApiResponse) {
 
 async function findByScreenName(req: NextApiRequest, res: NextApiResponse) {
   const { screenName } = req.query;
-  checkMissingParams({ screenName });
+  if (screenName === null || screenName === undefined) {
+    throw new BadReqErr('screenName이 누락되었습니다.');
+  }
   const screenNameStr = Array.isArray(screenName) ? screenName[0] : screenName;
-  const findResult = await MemeberModel.findByScreenName(screenNameStr!);
+  const findResult = await MemeberModel.findByScreenName(screenNameStr);
   if (findResult === null) {
     return res.status(404).end();
   }

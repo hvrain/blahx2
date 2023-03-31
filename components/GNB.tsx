@@ -11,11 +11,7 @@ const GNB = function () {
     </Button>
   );
 
-  const logoutButton = (
-    <Button as="a" onClick={signOut}>
-      로그아웃
-    </Button>
-  );
+  const logoutButton = <Button onClick={signOut}>로그아웃</Button>;
 
   return (
     <Box w="full" bgColor="white" p="3" borderBottom={1} borderStyle="solid" borderColor="gray.200">
