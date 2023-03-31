@@ -1,9 +1,10 @@
 import { GetServerSideProps, NextPage } from 'next';
-import { Avatar, Box, Button, Flex, Heading, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Heading, Text, VStack } from '@chakra-ui/react';
 import axios, { AxiosResponse } from 'axios';
 import ServiceLayout from '@/components/service_layout';
 import QuestionForm from '@/components/question_form';
 import { InAuthUser } from '@/models/in_auth_user';
+import MessageItem from '@/components/message_item';
 
 type Props = {
   userInfo: InAuthUser | null;
@@ -30,6 +31,38 @@ const UserHomePage: NextPage<Props> = function ({ userInfo }) {
         </Box>
         <QuestionForm userInfo={userInfo} />
       </Flex>
+      <VStack mt="2" gap="2">
+        <MessageItem
+          uid="uid"
+          displayName="displayName"
+          isOwner
+          item={{
+            id: 'id',
+            message: 'message',
+            createAt: '2023-03-31T21:19:00+09:00',
+            author: {
+              displayName: 'test',
+              photoURL: null,
+            },
+          }}
+        />
+        <MessageItem
+          uid="uid"
+          displayName="displayName"
+          isOwner={false}
+          item={{
+            id: 'id',
+            message: 'message',
+            createAt: '2023-03-31T21:19:00+09:00',
+            author: {
+              displayName: 'author',
+              photoURL: null,
+            },
+            reply: 'reply',
+            replyAt: '2023-03-31T21:30:00+09:00',
+          }}
+        />
+      </VStack>
     </ServiceLayout>
   );
 };
