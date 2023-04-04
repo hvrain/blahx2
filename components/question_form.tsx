@@ -1,5 +1,5 @@
 import { Button, Flex, FormControl, FormLabel, Switch, Textarea, useToast, UseToastOptions } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import TextareaAutosize from 'react-autosize-textarea';
 import CustomAvatar from './custom_avatar';
 import { useAuth } from '@/contexts/auth_user.context';
@@ -7,6 +7,7 @@ import { InAuthUser } from '../models/in_auth_user';
 
 type Props = {
   userInfo: InAuthUser;
+  onSendSuccess: () => void;
 };
 
 async function postMessage({
@@ -43,12 +44,16 @@ async function postMessage({
   }
 }
 
-const QuestionForm: React.FC<Props> = function ({ userInfo }) {
+const QuestionForm: React.FC<Props> = function ({ userInfo, onSendSuccess }) {
   const [message, setMessage] = useState('');
   const [isAnonymous, setIsAnonymous] = useState(false);
   const toast = useToast();
   const { authUser } = useAuth();
   const [lastToastTime, setLastToastTime] = useState(0);
+
+  useEffect(() => {
+    setIsAnonymous(authUser === null);
+  }, [authUser]);
 
   const clickButton = async () => {
     if (message === '') {
@@ -164,6 +169,7 @@ const QuestionForm: React.FC<Props> = function ({ userInfo }) {
               title: '메세지를 등록하였습니다.',
             });
             setMessage('');
+            onSendSuccess();
           }}
         >
           입력
